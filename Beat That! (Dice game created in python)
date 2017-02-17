@@ -1,0 +1,95 @@
+import time
+import sys
+import random
+from random import randint
+
+def game():
+    numOfDice = int(input("How many dice would you like to use? "))
+    time.sleep(1.5)
+    print("Player 1's turn:")
+    time.sleep(1.5)
+    player1 = turn(numOfDice)
+    time.sleep(1.5)
+    print("Player 2's turn:")
+    time.sleep(1.5)
+    player2 = turn(numOfDice)
+    time.sleep(1.5)
+    if player1 > player2:
+        print("Player 1 wins! They had a score of",player1,"\nPlayer 2 had a score of",player2)
+        winner = "p1"
+    elif player2 > player1:
+        print("Player 2 wins! They had a score of",player2,"\nPlayer 1 had a score of",player1)
+        winner = "p2"
+    else:
+        print("Tie! Both players had a score of",player1)
+        winner = "tie"
+    with open("scores.txt","a") as file:
+        file.write(winner+"\n")
+        
+def rollADice(numOfDice):
+    num = []
+    for i in range(1,numOfDice+1):
+        a = randint(1, 6)
+        print("Rolling dice...\nYou rolled a",a)
+        time.sleep(1.5)
+        num.append(int(a))
+    return num
+
+def sortList(num):
+    b = []
+    for i in range(1,len(num)+1):
+        b.append(max(num))
+        num.remove(max(num))
+    return ''.join(map(str,b))
+
+def turn(numOfDice):
+    roll = rollADice(numOfDice)
+    print("What you rolled:",roll)
+    b = sortList(roll)
+    print("The biggest number you can make out of your roll is: ",b)
+    return b
+
+def stats():
+    with open("scores.txt","r") as file:
+        player1Wins = []
+        player2Wins = []
+        ties = []
+        for i in file:
+            if "p1" in i: player1Wins.append(i)
+            if "p2" in i: player2Wins.append(i)
+            if "tie" in i: ties.append(i)
+
+    print("Player 1 has won",len(player1Wins),"times.\nPlayer 2 has won",len(player2Wins),"times\nThe game has been a tie",len(ties),"times.")
+
+            
+def rules():
+    print("Beat That! is a dice game for 2 or more players")
+    time.sleep(1.5)
+    print("Beat That! is a dice game that can be played with a number of dice.")
+    time.sleep(1.5)
+    print("Players may take turns rolling a set number of dice.")
+    time.sleep(1.5)
+    print("The aim of the game is to get the biggest number from your dice roll.")
+    time.sleep(1.5)
+    print("Lets say that player 1 rolled 3 dice and had a result of 2, 5 and 5.")
+    time.sleep(1.5)
+    print("The biggest possible number that player 1 can make is 552.")
+    time.sleep(1.5)
+    print("Player 2 may roll a 4, 7 and a 9 and the biggest number he can make is 974.")
+    time.sleep(1.5)
+    print("In this case, player 2 has won the game.")
+    time.sleep(1.5)
+    print("Those are the rules.")
+    
+def start():
+    a = int(input("What would you like to do?\n1)Play a game of Beat That!\n2)Check stats for the game.\n3)Read the rules.\n4)Quit the program.\n"))
+    if a == 1:
+        game()
+    if a == 2:
+        stats()
+    if a == 3:
+        rules()
+    if a == 4:
+        sys.exit()
+while True:
+    start()
